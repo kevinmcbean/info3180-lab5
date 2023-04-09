@@ -52,23 +52,6 @@ def movies():
         "errors": form_errors(form)
     }), 400
 
-@app.route('/api/v1/movies', methods=['GET'])
-def get_movies():
-    
-    movies = Movies.query.all()
-    movies =  db.session.execute(db.select(Movies)).scalars()
-    movie_list = []
-
-    for movie in movies:
-        movie_data = {
-            'id': movie.id,
-            'title': movie.title,
-            'description': movie.description,
-            'poster': url_for('get__image', filename=movie.poster)
-        }
-        movie_list.append(movie_data)
-    print(movie_list)
-    return jsonify({'movies' : movie_list})
 
     
 
@@ -95,9 +78,7 @@ def form_errors(form):
 
     return error_messages
 
-@app.route('/api/v1/posters/<filename>')
-def get_image(filename):
-    return send_from_directory(os.path.join(os.getcwd(),app.config['UPLOAD_FOLDER']), filename)
+
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
